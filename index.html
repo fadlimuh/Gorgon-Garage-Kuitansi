@@ -70,9 +70,9 @@
         <input type="text" class="form-control" id="namaPelanggan" placeholder="Masukkan nama pelanggan" required>
       </div>
       <div class="mb-3">
-        <label for="jenisMobil" class="form-label">Jenis Mobil</label>
-        <select class="form-select" id="jenisMobil" required>
-          <option value="" selected disabled>Pilih jenis mobil</option>
+        <label for="JenisKendaraan" class="form-label">Jenis Kendaraan</label>
+        <select class="form-select" id="JenisKendaraan" required>
+          <option value="" selected disabled>Pilih Jenis Kendaraan</option>
           <option value="Pribadi">Pribadi</option>
           <option value="Showroom">Showroom</option>
         </select>
@@ -148,7 +148,7 @@
     document.getElementById("buatPDF").addEventListener("click", function () {
       const nomorInvoice = document.getElementById("nomorInvoice").value;
       const namaPelanggan = document.getElementById("namaPelanggan").value;
-      const jenisMobil = document.getElementById("jenisMobil").value;
+      const JenisKendaraan = document.getElementById("JenisKendaraan").value;
       const namaMobil = document.getElementById("namaMobil").value;
       const platNomor = document.getElementById("platNomor").value;
       const tanggalMasuk = document.getElementById("tanggalMasuk").value;
@@ -172,7 +172,7 @@
         <div style="font-family: Arial, sans-serif; line-height: 1.6; border: 1px solid #ddd; padding: 20px;">
           <h3>Invoice #${nomorInvoice}</h3>
           <p>Nama: ${namaPelanggan}</p>
-          <p>Mobil: ${jenisMobil} - ${namaMobil}</p>
+          <p>Mobil: ${JenisKendaraan} - ${namaMobil}</p>
           <p>Plat Nomor: ${platNomor}</p>
           <p>Tanggal Masuk: ${tanggalMasuk}</p>
           <p>Tanggal Pembayaran: ${tanggalPembayaran}</p>
