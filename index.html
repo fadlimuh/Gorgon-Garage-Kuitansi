@@ -4,17 +4,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gorgon Garage - kuitansi Pembayaran</title>
+  <title>Kuitansi Bengkel Mobil</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
   <style>
-    /* General Styling */
     body {
       font-family: Arial, sans-serif;
       background-color: #f8f9fa;
       color: #333;
     }
 
-    /* Navbar Styling */
     .navbar {
       background-color: #343a40;
     }
@@ -29,90 +27,10 @@
       color: #ffc107 !important;
     }
 
-    /* Invoice Styling */
     .container {
       margin-top: 30px;
     }
 
-    .invoice-preview {
-      background-color: #fff;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 30px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      margin: 30px auto;
-      width: 80%;
-    }
-
-    .invoice-header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .invoice-header h3 {
-      color: #93f3ff;
-      font-size: 32px;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-
-    .invoice-header p {
-      font-size: 18px;
-      color: #555;
-    }
-
-    .invoice-detail {
-      margin-bottom: 30px;
-    }
-
-    .invoice-detail h4 {
-      font-size: 24px;
-      color: #333;
-      margin-bottom: 20px;
-      text-align: center;
-      text-transform: uppercase;
-    }
-
-    .invoice-detail .row {
-      margin-bottom: 12px;
-    }
-
-    .invoice-detail .col-md-6 {
-      font-size: 16px;
-      color: #555;
-    }
-
-    /* Table Styling */
-    .table {
-      width: 100%;
-      margin-top: 20px;
-      border: 1px solid #ddd;
-      border-collapse: collapse;
-    }
-
-    .table th,
-    .table td {
-      padding: 12px;
-      text-align: left;
-    }
-
-    .table th {
-      background-color: #93f3ff;
-      color: #fff;
-    }
-
-    .table td {
-      background-color: #f8f9fa;
-    }
-
-    .total-row {
-      font-size: 18px;
-      font-weight: bold;
-      background-color: #93f3ff;
-      color: #fff;
-    }
-
-    /* Button Styling */
     .btn-custom {
       background-color: #93f3ff;
       color: white;
@@ -123,7 +41,6 @@
       color: white;
     }
 
-    /* Footer Styling */
     .footer {
       margin-top: 40px;
       font-size: 14px;
@@ -134,30 +51,31 @@
 </head>
 
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark" style="height: 400px; background-image: url('img/banner.png'); background-size: cover; background-repeat: no-repeat; background-position: center;">
-    <div class="container-fluid" style="margin-top: 50px; margin-bottom: 50px;">
-      <!-- Navbar Content -->
-    </div>
-  </nav>
 
-  <!-- Main Container -->
+  <header class="text-center my-4">
+    <img src="img/banner.png" alt="Gorgon Garage" style="width: 100%; height: auto; max-height: 100vh;" class="img-fluid">
+  </header>
+
+
   <div class="container">
-    <h1 class="text-center mb-4">kuitansi Gorgon Garage</h1>
+    <h1 class="text-center mb-4">Kuitansi Gorgon Garage</h1>
 
-    <!-- Form untuk Input Data -->
     <form id="invoiceForm">
       <div class="mb-3">
         <label for="nomorInvoice" class="form-label">Nomor Invoice</label>
         <input type="text" class="form-control" id="nomorInvoice" placeholder="Masukkan nomor invoice" required>
       </div>
-    <div class="mb-3">
+      <div class="mb-3">
         <label for="namaPelanggan" class="form-label">Nama Pelanggan</label>
         <input type="text" class="form-control" id="namaPelanggan" placeholder="Masukkan nama pelanggan" required>
       </div>
       <div class="mb-3">
         <label for="jenisMobil" class="form-label">Jenis Mobil</label>
-        <input type="text" class="form-control" id="jenisMobil" placeholder="Masukkan jenis mobil" required>
+        <select class="form-select" id="jenisMobil" required>
+          <option value="" selected disabled>Pilih jenis mobil</option>
+          <option value="Pribadi">Pribadi</option>
+          <option value="Showroom">Showroom</option>
+        </select>
       </div>
       <div class="mb-3">
         <label for="namaMobil" class="form-label">Nama Mobil</label>
@@ -183,138 +101,119 @@
         <label for="hargaPerPanel" class="form-label">Harga per Panel (IDR)</label>
         <input type="number" class="form-control" id="hargaPerPanel" placeholder="Masukkan harga per panel" required>
       </div>
+      <div id="sparepartContainer" class="mb-3">
+        <label class="form-label">Bagian Tambahan (Opsional)</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Nama Barang" id="sparepartName">
+          <input type="number" class="form-control" placeholder="Harga Barang (IDR)" id="sparepartPrice">
+          <button type="button" class="btn btn-primary" id="addSparepart">Tambah</button>
+        </div>
+        <ul id="sparepartList" class="list-group"></ul>
+      </div>
       <div class="mb-3">
         <label for="detailLayanan" class="form-label">Detail Layanan</label>
         <textarea class="form-control" id="detailLayanan" rows="3" placeholder="Masukkan detail layanan" required></textarea>
       </div>
-      <div class="mb-3">
-        <label for="totalBiaya" class="form-label">Total Biaya (IDR)</label>
-        <input type="number" class="form-control" id="totalBiaya" placeholder="Masukkan total biaya" required>
-      </div>
-      <button type="button" id="buatPDF" class="btn btn-custom">Buat kuitansi PDF</button>
+      <button type="button" id="buatPDF" class="btn btn-custom">Buat Kuitansi PDF</button>
     </form>
-
-    <!-- Preview kuitansi -->
-    <div id="previewContainer" class="mt-5" style="display:none;">
-      <h2 class="text-center">Pratinjau kuitansi</h2>
-      <div id="invoicePreview" class="invoice-preview"></div>
-      <button class="btn btn-success mt-3" id="unduhPDF">Unduh kuitansi PDF</button>
-    </div>
   </div>
 
-  <!-- Footer -->
   <div class="footer">
     <p>&copy; 2024 Gorgon Garage | Bengkel Mobil Terpercaya di Bekasi</p>
   </div>
 
-  <!-- Script -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
   <script>
-    // Event untuk membuat preview dan PDF
+    const spareparts = [];
+
+    document.getElementById("addSparepart").addEventListener("click", function () {
+      const name = document.getElementById("sparepartName").value;
+      const price = parseInt(document.getElementById("sparepartPrice").value);
+
+      if (name && price > 0) {
+        spareparts.push({ name, price });
+        const sparepartList = document.getElementById("sparepartList");
+        const item = document.createElement("li");
+        item.className = "list-group-item";
+        item.textContent = `${name} - Rp ${new Intl.NumberFormat('id-ID').format(price)}`;
+        sparepartList.appendChild(item);
+
+        document.getElementById("sparepartName").value = "";
+        document.getElementById("sparepartPrice").value = "";
+      } else {
+        alert("Masukkan nama dan harga sparepart dengan benar!");
+      }
+    });
+
     document.getElementById("buatPDF").addEventListener("click", function () {
-      // Ambil data dari form
       const nomorInvoice = document.getElementById("nomorInvoice").value;
-      const nama = document.getElementById("namaPelanggan").value;
+      const namaPelanggan = document.getElementById("namaPelanggan").value;
       const jenisMobil = document.getElementById("jenisMobil").value;
       const namaMobil = document.getElementById("namaMobil").value;
       const platNomor = document.getElementById("platNomor").value;
       const tanggalMasuk = document.getElementById("tanggalMasuk").value;
       const tanggalPembayaran = document.getElementById("tanggalPembayaran").value;
-      const jumlahPanel = document.getElementById("jumlahPanel").value;
-      const hargaPerPanel = document.getElementById("hargaPerPanel").value;
+      const jumlahPanel = parseInt(document.getElementById("jumlahPanel").value) || 0;
+      const hargaPerPanel = parseInt(document.getElementById("hargaPerPanel").value) || 0;
       const detailLayanan = document.getElementById("detailLayanan").value;
-  
-      // Hitung total biaya
-      const totalBiaya = jumlahPanel * hargaPerPanel;
-  
-      // Format isi kuitansi
-      const isikuitansi = `
-      <div style="font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
-        <!-- Header -->
-        <div style="text-align: center; margin-top: 20px; margin-bottom: 30px;">
-          <h1 style="color: #093145; font-size: 28px; margin-bottom: 10px;">Gorgon Garage</h1>
-          <p style="font-size: 14px; color: #555;">Jl. Raya Jatikramat No.23, Jatikramat, Kec. Jatiasih, Kota Bekasi, Jawa Barat 17421</p>
+
+      const totalPanel = jumlahPanel * hargaPerPanel;
+      const totalSparepart = spareparts.reduce((sum, sp) => sum + sp.price, 0);
+      const grandTotal = totalPanel + totalSparepart;
+
+      const sparepartDetails = spareparts
+        .map(sp => `<tr><td>${sp.name}</td><td>Rp ${new Intl.NumberFormat('id-ID').format(sp.price)}</td></tr>`)
+        .join("");
+
+      const content = `
+        <div style="text-align: center; margin-bottom: 20px;">
+          <img src="img/banner.png" alt="Banner" style="width: 100%; height: auto; margin-bottom: 20px;">
         </div>
-        <hr style="border-top: 2px solid #093145; margin-bottom: 30px;">
-
-        <!-- Nomor Invoice -->
-        <h2 style="text-align: center; margin-bottom: 10px;">Invoice #${nomorInvoice}</h2>
-
-        <!-- Judul kuitansi -->
-        <h2 style="text-align: center; color: #093145; margin-bottom: 20px; text-transform: uppercase;">kuitansi Pembayaran</h2>
-
-        <!-- Detail Pembayaran -->
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px; font-size: 14px;">
-          <tr>
-            <th style="text-align: left; padding: 10px; border: 1px solid #ddd; background-color: #f4f7f9;">Nama Pelanggan</th>
-            <td style="padding: 10px; border: 1px solid #ddd;">${nama}</td>
-          </tr>
-          <tr>
-            <th style="text-align: left; padding: 10px; border: 1px solid #ddd; background-color: #f4f7f9;">Jenis Mobil</th>
-            <td style="padding: 10px; border: 1px solid #ddd;">${jenisMobil}</td>
-          </tr>
-          <tr>
-            <th style="text-align: left; padding: 10px; border: 1px solid #ddd; background-color: #f4f7f9;">Nama Mobil</th>
-            <td style="padding: 10px; border: 1px solid #ddd;">${namaMobil}</td>
-          </tr>
-          <tr>
-            <th style="text-align: left; padding: 10px; border: 1px solid #ddd; background-color: #f4f7f9;">Plat Nomor</th>
-            <td style="padding: 10px; border: 1px solid #ddd;">${platNomor}</td>
-          </tr>
-          <tr>
-            <th style="text-align: left; padding: 10px; border: 1px solid #ddd; background-color: #f4f7f9;">Tanggal Masuk</th>
-            <td style="padding: 10px; border: 1px solid #ddd;">${tanggalMasuk}</td>
-          </tr>
-          <tr>
-            <th style="text-align: left; padding: 10px; border: 1px solid #ddd; background-color: #f4f7f9;">Tanggal Pembayaran</th>
-            <td style="padding: 10px; border: 1px solid #ddd;">${tanggalPembayaran}</td>
-          </tr>
-          <tr>
-            <th style="text-align: left; padding: 10px; border: 1px solid #ddd; background-color: #f4f7f9;">Jumlah Panel</th>
-            <td style="padding: 10px; border: 1px solid #ddd;">${jumlahPanel}</td>
-          </tr>
-          <tr>
-            <th style="text-align: left; padding: 10px; border: 1px solid #ddd; background-color: #f4f7f9;">Harga per Panel</th>
-            <td style="padding: 10px; border: 1px solid #ddd;">Rp ${new Intl.NumberFormat('id-ID').format(hargaPerPanel)}</td>
-          </tr>
-          <tr>
-            <th style="text-align: left; padding: 10px; border: 1px solid #ddd; background-color: #f4f7f9; color: #093145; font-weight: bold;">Total Biaya</th>
-            <td style="padding: 10px; border: 1px solid #ddd; color: #093145; font-weight: bold;">Rp ${new Intl.NumberFormat('id-ID').format(totalBiaya)}</td>
-          </tr>
-        </table>
-
-        <!-- Detail Layanan -->
-        <div style="margin-bottom: 30px;">
-          <p style="margin: 0; font-size: 14px;"><strong>Detail Layanan:</strong></p>
-          <p style="background-color: #f9f9f9; padding: 15px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;">${detailLayanan}</p>
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; border: 1px solid #ddd; padding: 20px;">
+          <h3>Invoice #${nomorInvoice}</h3>
+          <p>Nama: ${namaPelanggan}</p>
+          <p>Mobil: ${jenisMobil} - ${namaMobil}</p>
+          <p>Plat Nomor: ${platNomor}</p>
+          <p>Tanggal Masuk: ${tanggalMasuk}</p>
+          <p>Tanggal Pembayaran: ${tanggalPembayaran}</p>
+          <hr>
+          <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr style="background-color: #f1f1f1;">
+                <th style="padding: 8px; text-align: left;">Item</th>
+                <th style="padding: 8px; text-align: left;">Harga</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Panel</td>
+                <td>Rp ${new Intl.NumberFormat('id-ID').format(totalPanel)}</td>
+              </tr>
+              ${sparepartDetails}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>Total</th>
+                <th>Rp ${new Intl.NumberFormat('id-ID').format(grandTotal)}</th>
+              </tr>
+            </tfoot>
+          </table>
+          <hr>
+          <p>Detail Layanan: ${detailLayanan}</p>
+          <p style="text-align: center; font-weight: bold;">Terima kasih atas kunjungan Anda!</p>
         </div>
+      `;
 
-        <!-- Footer -->
-        <hr style="border-top: 1px solid #ddd; margin-top: 30px; margin-bottom: 20px;">
-        <p style="text-align: center; font-weight: bold; font-size: 14px; color: #093145;">Terima kasih telah menggunakan layanan Gorgon Garage!</p>
-      </div>
-    `;
+      const options = {
+        margin: 1,
+        filename: `kuitansi_${nomorInvoice}.pdf`,
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
 
-  
-      // Tampilkan preview di halaman
-      const previewContainer = document.getElementById("previewContainer");
-      document.getElementById("invoicePreview").innerHTML = isikuitansi;
-      previewContainer.style.display = "block";
-  
-      // Event untuk unduh PDF
-      document.getElementById("unduhPDF").addEventListener("click", function () {
-        const opt = {
-          margin: 1,
-          filename: `kuitansi_gorgon_garage_${nama.replace(/\s+/g, '_')}.pdf`,
-          html2canvas: { scale: 2 },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-  
-        html2pdf().set(opt).from(isikuitansi).save();
-      });
+      html2pdf().set(options).from(content).save();
     });
   </script>
-  
 </body>
 
 </html>
